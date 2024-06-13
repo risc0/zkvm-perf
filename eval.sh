@@ -41,10 +41,11 @@ echo "Running eval script"
 
 # Runs the eval for the specified program, prover & hash function with conditional compilation based on the feature flag.
 
+# RUST_LOG=info RUSTFLAGS='-C target-cpu=native' cargo run -p eval --release --no-default-features --features $2 -- --program $1 --prover $2 --hashfn $3 --shard-size $4 --filename $5
 RUST_LOG=info RUSTFLAGS='-C target-cpu=native -C target_feature=+avx512ifma,+avx512vl' cargo run -p eval --release --no-default-features --features $2 -- --program $1 --prover $2 --hashfn $3 --shard-size $4 --filename $5
 
 # TODO: conditionally run with avx flags based on the machine's architecture.
-#RUST_LOG=info RUSTFLAGS='-C target-cpu=native' cargo run -p eval --release --no-default-features --features $2 -- --program $1 --prover $2 --hashfn $3 --shard-size $4
+# RUST_LOG=info RUSTFLAGS='-C target-cpu=native' cargo run -p eval --release --no-default-features --features $2 -- --program $1 --prover $2 --hashfn $3 --shard-size $4
 
 cd ../
 

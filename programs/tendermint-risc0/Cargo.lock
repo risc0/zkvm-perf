@@ -276,8 +276,8 @@ dependencies = [
 
 [[package]]
 name = "crypto-bigint"
-version = "0.5.2"
-source = "git+https://github.com/risc0/RustCrypto-crypto-bigint?tag=v0.5.2-risczero.0#8b30304277cfe553b51a78a0e693f48bbb059eb3"
+version = "0.5.5"
+source = "git+https://github.com/risc0/RustCrypto-crypto-bigint?tag=v0.5.5-risczero.0#3ab63a6f1048833f7047d5a50532e4a4cc789384"
 dependencies = [
  "getrandom",
  "subtle",
@@ -296,8 +296,8 @@ dependencies = [
 
 [[package]]
 name = "curve25519-dalek"
-version = "4.1.0"
-source = "git+https://github.com/risc0/curve25519-dalek?tag=curve25519-4.1.0-risczero.1#42c4faf7dc3f640a7e3f7e4cbf43e7d5d6d46b67"
+version = "4.1.2"
+source = "git+https://github.com/risc0/curve25519-dalek?tag=curve25519-4.1.2-risczero.0#3dccc5b71b806f500e73829e2a5cbfe288cce2a0"
 dependencies = [
  "cfg-if",
  "cpufeatures",
@@ -314,8 +314,8 @@ dependencies = [
 
 [[package]]
 name = "curve25519-dalek-derive"
-version = "0.1.0"
-source = "git+https://github.com/risc0/curve25519-dalek?tag=curve25519-4.1.0-risczero.1#42c4faf7dc3f640a7e3f7e4cbf43e7d5d6d46b67"
+version = "0.1.1"
+source = "git+https://github.com/risc0/curve25519-dalek?tag=curve25519-4.1.2-risczero.0#3dccc5b71b806f500e73829e2a5cbfe288cce2a0"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -394,7 +394,7 @@ dependencies = [
 [[package]]
 name = "ed25519-consensus"
 version = "2.1.0"
-source = "git+ssh://git@github.com/succinctlabs/ed25519-consensus-private.git?branch=uma/risc0#c977b675bbc5507960a63c885e513eeb4b8be96d"
+source = "git+https://github.com/risc0/ed25519-consensus?rev=8a6d26d1fcd377f9322ba83d3732d04c157e4778#8a6d26d1fcd377f9322ba83d3732d04c157e4778"
 dependencies = [
  "curve25519-dalek",
  "hex",
@@ -528,6 +528,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
+name = "hex-literal"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6fe2267d4ed49bc07b63801559be28c718ea06c4738b7a03c94df7386d2cde46"
+
+[[package]]
 name = "itertools"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -585,28 +591,6 @@ name = "num-conv"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
-
-[[package]]
-name = "num-derive"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "876a53fff98e03a936a674b29568b0e605f06b29372c2489ff4de23f1949743d"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.109",
-]
-
-[[package]]
-name = "num-derive"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed3955f1a9c7c0c15e092f9c887db08b1fc683305fdf6eb6684f22555355e202"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.48",
-]
 
 [[package]]
 name = "num-integer"
@@ -756,9 +740,9 @@ checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
 
 [[package]]
 name = "risc0-binfmt"
-version = "0.21.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ae2939426c60756f910352184716a3538748208c9e11ade4a507db3b2757157"
+checksum = "5a33ca13e8e2fe08fc283accbb08fcbabbfdd27acf88dddc9b39654d0e487b15"
 dependencies = [
  "anyhow",
  "elf",
@@ -770,9 +754,9 @@ dependencies = [
 
 [[package]]
 name = "risc0-circuit-recursion"
-version = "0.21.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a43cade35f73ad81ba974fe1d5e1513331f87052af8377b26b00a838f39c6920"
+checksum = "5c12ea07079420272e5705baea6a0756b21c0dadeca7ed34a7866eb9c073b9a0"
 dependencies = [
  "anyhow",
  "bytemuck",
@@ -784,22 +768,24 @@ dependencies = [
 
 [[package]]
 name = "risc0-circuit-rv32im"
-version = "0.21.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31440989146b342a7d37c15079c9568c69b7f988f3b789f422c7d4ed76526ddb"
+checksum = "5ef57b3afe8e59bec6f535c49c99dc7cd3fda7e93254fd499e5469ec17fec1d0"
 dependencies = [
  "anyhow",
+ "risc0-binfmt",
  "risc0-core",
  "risc0-zkp",
  "risc0-zkvm-platform",
+ "serde",
  "tracing",
 ]
 
 [[package]]
 name = "risc0-core"
-version = "0.21.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "02e0cbd09d03c23b572b66cd96a56143adb22bf895aca89c1a153ccebedaa0b4"
+checksum = "f43b7bd8b9adb8bed7eaecfa5c152b6c676c4512aea1120d2cdc5fbbca4b2ffb"
 dependencies = [
  "bytemuck",
  "rand_core",
@@ -807,33 +793,37 @@ dependencies = [
 
 [[package]]
 name = "risc0-groth16"
-version = "0.21.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da1e9b8dae3f9c3862b6278b2812989a2f5a537975e5bd6a687f07cf1df68a36"
+checksum = "2e275963cd541e1bc9b94f36e23e85b87798a96e04fdf7b013500c08b949a8c9"
 dependencies = [
  "anyhow",
  "ark-bn254",
+ "ark-ec",
  "ark-groth16",
  "ark-serialize",
+ "bytemuck",
  "hex",
  "num-bigint",
- "num-derive 0.4.2",
  "num-traits",
+ "risc0-binfmt",
  "risc0-zkp",
  "serde",
 ]
 
 [[package]]
 name = "risc0-zkp"
-version = "0.21.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b96b035f744ecaaa7e9809c699bc85cf669cbab6f297f141d918e9b4c8098b79"
+checksum = "53342780aef2d31ccc0526e6d4b151dab69e678d2e1495b2270ed40f5e1df6f4"
 dependencies = [
  "anyhow",
  "blake2",
  "bytemuck",
+ "cfg-if",
  "digest",
  "hex",
+ "hex-literal",
  "paste",
  "rand_core",
  "risc0-core",
@@ -845,17 +835,15 @@ dependencies = [
 
 [[package]]
 name = "risc0-zkvm"
-version = "0.21.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2a1275834c86176efc122a172c2b5f271a8a5d792de7efbc47dfbecaaaff9432"
+checksum = "774b03337fa1675204a067b3f15be740dbedde63fa46647017140fd023805afb"
 dependencies = [
  "anyhow",
  "bytemuck",
  "cfg-if",
  "getrandom",
  "hex",
- "num-derive 0.4.2",
- "num-traits",
  "risc0-binfmt",
  "risc0-circuit-recursion",
  "risc0-circuit-rv32im",
@@ -872,9 +860,9 @@ dependencies = [
 
 [[package]]
 name = "risc0-zkvm-platform"
-version = "0.21.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03b6378c9e407be18a1560ed030fd87fb6056293c56263efac46c507ae97e0d7"
+checksum = "3b8df83bfa425e078ef77ed115f5eff26b5ebc4a584253b31e4e7122fa2bcced"
 dependencies = [
  "bytemuck",
  "getrandom",
@@ -965,8 +953,8 @@ dependencies = [
 
 [[package]]
 name = "sha2"
-version = "0.10.6"
-source = "git+https://github.com/risc0/RustCrypto-hashes?tag=sha2-v0.10.6-risczero.0#7fd6900c4f637bd15ee2642dfa77110f8f1ad065"
+version = "0.10.8"
+source = "git+https://github.com/risc0/RustCrypto-hashes?tag=sha2-v0.10.8-risczero.0#244dc3b08788f7a4ccce14c66896ae3b4f24c166"
 dependencies = [
  "cfg-if",
  "cpufeatures",
@@ -1028,9 +1016,9 @@ dependencies = [
 
 [[package]]
 name = "tendermint"
-version = "0.34.0"
+version = "0.37.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc2294fa667c8b548ee27a9ba59115472d0a09c2ba255771092a7f1dcf03a789"
+checksum = "954496fbc9716eb4446cdd6d00c071a3e2f22578d62aa03b40c7e5b4fda3ed42"
 dependencies = [
  "bytes",
  "digest",
@@ -1057,9 +1045,9 @@ dependencies = [
 
 [[package]]
 name = "tendermint-light-client-verifier"
-version = "0.34.0"
+version = "0.37.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "74994da9de4b1144837a367ca2c60c650f5526a7c1a54760a3020959b522e474"
+checksum = "3848090df4502a09ee27cb1a00f1835e1111c8993b22c5e1e41ffb7f6f09d57e"
 dependencies = [
  "derive_more",
  "flex-error",
@@ -1070,14 +1058,12 @@ dependencies = [
 
 [[package]]
 name = "tendermint-proto"
-version = "0.34.0"
+version = "0.37.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2cc728a4f9e891d71adf66af6ecaece146f9c7a11312288a3107b3e1d6979aaf"
+checksum = "dc87024548c7f3da479885201e3da20ef29e85a3b13d04606b380ac4c7120d87"
 dependencies = [
  "bytes",
  "flex-error",
- "num-derive 0.3.3",
- "num-traits",
  "prost",
  "prost-types",
  "serde",
