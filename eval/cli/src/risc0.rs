@@ -30,7 +30,7 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
         println!("risc0 cycles: {}", cycles);
 
         // Setup the prover.
-        let env = ExecutorEnv::builder().build().unwrap();
+        let env = ExecutorEnv::builder().segment_limit_po2(args.shard_size as u32).build().unwrap();
         let opts = ProverOpts::default();
         let prover = get_prover_server(&opts).unwrap();
 
