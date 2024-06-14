@@ -22,7 +22,7 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
         let image_id = compute_image_id(elf.as_slice()).unwrap();
 
         // Compute some statistics.
-        let env = ExecutorEnv::builder().build().unwrap();
+        let env = ExecutorEnv::builder().segment_limit_po2(args.shard_size as u32).build().unwrap();
         let mut exec = ExecutorImpl::from_elf(env, &elf).unwrap();
         let session = exec.run().unwrap();
         let cycles = session.user_cycles;
@@ -30,7 +30,7 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
         println!("risc0 cycles: {}", cycles);
 
         // Setup the prover.
-        let env = ExecutorEnv::builder().build().unwrap();
+        let env = ExecutorEnv::builder().segment_limit_po2(args.shard_size as u32).build().unwrap();
         let opts = ProverOpts::default();
         let prover = get_prover_server(&opts).unwrap();
 
