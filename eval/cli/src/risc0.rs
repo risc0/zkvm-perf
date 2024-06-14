@@ -40,8 +40,10 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
 
         // Generate the proof.
         let ctx = VerifierContext::default();
-        let (receipt, core_prove_duration) =
+        let (info, core_prove_duration) =
             time_operation(|| prover.prove_session(&ctx, &session).unwrap());
+
+        let receipt = info.receipt;
 
         let composite_receipt = receipt.inner.composite().unwrap();
         let num_segments = composite_receipt.segments.len();
@@ -59,29 +61,31 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
         println!("Generated and verified the core proof");
 
         // Now compress the proof with recursion.
-        let composite_receipt = receipt.inner.composite().unwrap();
+        // let composite_receipt = receipt.inner.composite().unwrap();
         let (compressed_proof, compress_duration) =
-            time_operation(|| prover.compress(composite_receipt).unwrap());
+            time_operation(|| prover.compress(&ProverOpts::succinct(), &receipt).unwrap());
 
         // Verify the recursive proof
         let ((), recursive_verify_duration) =
-            time_operation(|| compressed_proof.verify_integrity().unwrap());
+            time_operation(|| compressed_proof.verify(image_id).unwrap());
+
+        let succinct_receipt = compressed_proof.inner.succinct().unwrap();
 
         // Get the recursive proof size.
-        let recursive_proof_size = compressed_proof.seal.len() * 4;
+        let recursive_proof_size = succinct_receipt.seal.len() * 4;
 
         // Bn254 wrapping duration
-        let (bn254_proof, bn254_compress_duration) =
-            time_operation(|| prover.identity_p254(&compressed_proof).unwrap());
+        // let (bn254_proof, bn254_compress_duration) =
+        //     time_operation(|| prover.identity_p254(&compressed_proof).unwrap());
 
-        let seal_bytes = bn254_proof.get_seal_bytes();
-        println!("Running groth16 wrapper");
-        let (_groth16_proof, groth16_duration) =
-            time_operation(|| risc0_zkvm::stark_to_snark(&seal_bytes).unwrap());
-        println!("Done running groth16");
+        // let seal_bytes = bn254_proof.get_seal_bytes();
+        // println!("Running groth16 wrapper");
+        // let (_groth16_proof, groth16_duration) =
+        //     time_operation(|| risc0_zkvm::stark_to_snark(&seal_bytes).unwrap());
+        // println!("Done running groth16");
 
         let prove_duration =
-            core_prove_duration + compress_duration + bn254_compress_duration + groth16_duration;
+            core_prove_duration + compress_duration;
 
         // Create the performance report.
         PerformanceReport {
@@ -102,9 +106,9 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
             recursive_proof_size,
             compressed_proof_size: None,
             compressed_proof_duration: None,
-            bn254_compress_duration: bn254_compress_duration.as_secs_f64(),
-            bn254_compress_proof_size: bn254_proof.seal.len() * 4,
-            groth16_compress_duration: groth16_duration.as_secs_f64(),
+            bn254_compress_duration: 0.0,
+            bn254_compress_proof_size: 0,
+            groth16_compress_duration: 0.0,
         }
     }
 }

@@ -61,35 +61,32 @@ impl PerformanceReportGenerator for SP1PerformanceReportGenerator {
         let reduce_proof_size = bincode::serialize(&reduce_proof).unwrap();
         println!("Recursive proof size: {}", reduce_proof_size.len());
 
-        let compress_start = std::time::Instant::now();
-        let compressed_proof = prover.shrink(&vk, reduce_proof);
-        let compress_duration = compress_start.elapsed();
-        let compressed_proof_size = bincode::serialize(&compressed_proof).unwrap();
-        println!("Done compressing proof before bn254 wrapping");
+        // let compress_start = std::time::Instant::now();
+        // let compressed_proof = prover.shrink(&vk, reduce_proof);
+        // let compress_duration = compress_start.elapsed();
+        // let compressed_proof_size = bincode::serialize(&compressed_proof).unwrap();
+        // println!("Done compressing proof before bn254 wrapping");
 
-        let wrapped_bn_254_start = std::time::Instant::now();
-        let wrapped_bn_254_proof = prover.wrap_bn254(&vk, compressed_proof);
-        let wrapped_bn_254_duration = wrapped_bn_254_start.elapsed();
-        let wrapped_bn_254_proof_size = bincode::serialize(&wrapped_bn_254_proof).unwrap();
+        // let wrapped_bn_254_start = std::time::Instant::now();
+        // let wrapped_bn_254_proof = prover.wrap_bn254(&vk, compressed_proof);
+        // let wrapped_bn_254_duration = wrapped_bn_254_start.elapsed();
+        // let wrapped_bn_254_proof_size = bincode::serialize(&wrapped_bn_254_proof).unwrap();
 
-        // We use this flag when benchmarking with JOLT, since they don't have groth16.
-        let no_groth16 = match env::var("NO_GROTH16") {
-            Ok(val) => val == "true",
-            Err(_err) => false, // Default to running groth16
-        };
-        let groth16_start = std::time::Instant::now();
-        if !no_groth16 {
-            let groth16_build_dir = sp1_prover::build::get_groth16_artifacts_dir();
-            let _groth16_proof =
-                prover.wrap_groth16(wrapped_bn_254_proof, groth16_build_dir.into());
-        }
-        let groth16_duration = groth16_start.elapsed();
+        // // We use this flag when benchmarking with JOLT, since they don't have groth16.
+        // let no_groth16 = match env::var("NO_GROTH16") {
+        //     Ok(val) => val == "true",
+        //     Err(_err) => false, // Default to running groth16
+        // };
+        // let groth16_start = std::time::Instant::now();
+        // if !no_groth16 {
+        //     let groth16_build_dir = sp1_prover::build::get_groth16_artifacts_dir();
+        //     let _groth16_proof =
+        //         prover.wrap_groth16(wrapped_bn_254_proof, groth16_build_dir.into());
+        // }
+        // let groth16_duration = groth16_start.elapsed();
 
         let prove_duration = prove_core_duration
-            + reduce_duration
-            + compress_duration
-            + wrapped_bn_254_duration
-            + groth16_duration;
+            + reduce_duration;
 
         // Create the performance report.
         PerformanceReport {
@@ -99,7 +96,7 @@ impl PerformanceReportGenerator for SP1PerformanceReportGenerator {
             shard_size: args.shard_size,
             shards: num_shards,
             cycles: cycles as u64,
-            speed: (cycles as f64) / prove_core_duration.as_secs_f64(),
+            speed: (cycles as f64) / prove_duration.as_secs_f64(),
             execution_duration: execution_duration.as_secs_f64(),
             prove_duration: prove_duration.as_secs_f64(),
             core_prove_duration: prove_core_duration.as_secs_f64(),
@@ -108,11 +105,11 @@ impl PerformanceReportGenerator for SP1PerformanceReportGenerator {
             recursive_prove_duration: reduce_duration.as_secs_f64(),
             recursive_verify_duration: 0.0, // TODO: fill this in.
             recursive_proof_size: reduce_proof_size.len(),
-            compressed_proof_size: Some(compressed_proof_size.len()),
-            compressed_proof_duration: Some(compress_duration.as_secs_f64()),
-            bn254_compress_duration: wrapped_bn_254_duration.as_secs_f64(),
-            bn254_compress_proof_size: wrapped_bn_254_proof_size.len(),
-            groth16_compress_duration: groth16_duration.as_secs_f64(),
+            compressed_proof_size: None,
+            compressed_proof_duration: None,
+            bn254_compress_duration: 0.0,
+            bn254_compress_proof_size: 0,
+            groth16_compress_duration: 0.0,
         }
     }
 }
