@@ -33,3 +33,6 @@ risc0 = ["risc0-zkvm"]
 sp1 = ["sp1-prover"]
 # The name of this feature flag is jolt-zkvm to avoid conflicting with the jolt crate.
 jolt-zkvm = ["jolt", "fibonacci-jolt", "loop-jolt", "tendermint-jolt", "sha2-chain-jolt"]
+
+cuda = ["risc0-zkvm/cuda"]
+metal = ["risc0-zkvm/metal"]
