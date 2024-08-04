@@ -22,7 +22,10 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
         let image_id = compute_image_id(elf.as_slice()).unwrap();
 
         // Compute some statistics.
-        let env = ExecutorEnv::builder().segment_limit_po2(args.shard_size as u32).build().unwrap();
+        let env = ExecutorEnv::builder()
+            .segment_limit_po2(args.shard_size as u32)
+            .build()
+            .unwrap();
         let mut exec = ExecutorImpl::from_elf(env, &elf).unwrap();
         let session = exec.run().unwrap();
         let cycles = session.user_cycles;
@@ -30,7 +33,10 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
         println!("risc0 cycles: {}", cycles);
 
         // Setup the prover.
-        let env = ExecutorEnv::builder().segment_limit_po2(args.shard_size as u32).build().unwrap();
+        let env = ExecutorEnv::builder()
+            .segment_limit_po2(args.shard_size as u32)
+            .build()
+            .unwrap();
         let opts = ProverOpts::default();
         let prover = get_prover_server(&opts).unwrap();
 
@@ -84,8 +90,7 @@ impl PerformanceReportGenerator for Risc0PerformanceReportGenerator {
         //     time_operation(|| risc0_zkvm::stark_to_snark(&seal_bytes).unwrap());
         // println!("Done running groth16");
 
-        let prove_duration =
-            core_prove_duration + compress_duration;
+        let prove_duration = core_prove_duration + compress_duration;
 
         // Create the performance report.
         PerformanceReport {

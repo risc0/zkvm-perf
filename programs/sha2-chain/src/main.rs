@@ -13,7 +13,8 @@ sp1_zkvm::entrypoint!(main);
 
 pub fn main() {
     let input = [5u8; 32];
-    let num_iters: u32 = 2500;
+    // let num_iters: u32 = 2500;
+    let num_iters: u32 = 200;
     let mut hash = input;
     for _ in 0..num_iters {
         let mut hasher = Sha256::new();

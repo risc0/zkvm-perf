@@ -145,7 +145,8 @@ fn get_jolt_statistics_for_program(program: ProgramId) -> ProveAndVerifyResult {
             println!("Starting proving");
             // Wrap the prove function in a closure that ignores the output.
             let input = [5u8; 32];
-            let num_iters: u32 = 2500;
+            // let num_iters: u32 = 2500;
+            let num_iters: u32 = 200;
             let prove_wrapper = |program: Program, preprocessing: JoltPreprocessing<F, G>| {
                 let (_, proof) = prove_sha2_chain(program, preprocessing, input, num_iters);
                 proof

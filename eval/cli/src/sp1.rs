@@ -1,11 +1,13 @@
-use sp1_core::utils;
-use sp1_prover::{utils::get_cycles, SP1Prover, SP1Stdin};
-use std::env;
-use std::fs;
-
 use crate::{
     get_elf, time_operation, EvalArgs, PerformanceReport, PerformanceReportGenerator, ProgramId,
 };
+use sp1_core::runtime::SP1Context;
+use sp1_core::utils;
+use sp1_core::utils::SP1ProverOpts;
+use sp1_prover::components::DefaultProverComponents;
+use sp1_prover::{utils::get_cycles, SP1Prover, SP1Stdin};
+use std::env;
+use std::fs;
 
 pub struct SP1PerformanceReportGenerator {}
 
@@ -30,16 +32,21 @@ impl PerformanceReportGenerator for SP1PerformanceReportGenerator {
         let cycles = get_cycles(&elf, &stdin);
 
         // Setup the prover.
-        let prover = SP1Prover::new();
+        let prover: SP1Prover<DefaultProverComponents> = SP1Prover::new();
         let (pk, vk) = prover.setup(&elf);
 
+        let ctx = SP1Context::default();
+        let opt = SP1ProverOpts::default();
         let stdin = SP1Stdin::new();
         // Execute the program.
-        let (_, execution_duration) = time_operation(|| SP1Prover::execute(&elf, &stdin));
+        let (_, execution_duration) = time_operation(|| {
+            SP1Prover::<DefaultProverComponents>::execute(&elf, &stdin, ctx.clone())
+        });
 
         // Generate the core proof ("leaf" stage).
         println!("Proving core");
-        let (proof, prove_core_duration) = time_operation(|| prover.prove_core(&pk, &stdin));
+        let (proof, prove_core_duration) =
+            time_operation(|| prover.prove_core(&pk, &stdin, opt, ctx).unwrap());
         let core_bytes = bincode::serialize(&proof).unwrap();
 
         let (_, verify_core_duration) = time_operation(|| {
@@ -57,7 +64,7 @@ impl PerformanceReportGenerator for SP1PerformanceReportGenerator {
 
         println!("Generating reduce proofs (recursive stage)");
         let (reduce_proof, reduce_duration) =
-            time_operation(|| prover.compress(&vk, proof, vec![]));
+            time_operation(|| prover.compress(&vk, proof, vec![], opt).unwrap());
         let reduce_proof_size = bincode::serialize(&reduce_proof).unwrap();
         println!("Recursive proof size: {}", reduce_proof_size.len());
 
@@ -85,8 +92,7 @@ impl PerformanceReportGenerator for SP1PerformanceReportGenerator {
         // }
         // let groth16_duration = groth16_start.elapsed();
 
-        let prove_duration = prove_core_duration
-            + reduce_duration;
+        let prove_duration = prove_core_duration + reduce_duration;
 
         // Create the performance report.
         PerformanceReport {

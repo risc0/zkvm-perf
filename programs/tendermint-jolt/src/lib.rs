@@ -39,7 +39,7 @@ pub fn tendermint() {
         0xcd, 0x90, 0x3e, 0x18, 0xa2,
     ];
     // Generate the Light Block's without testgen
-    let file_content = include_bytes!("./fixtures/1/signed_header.json");
+    let file_content = include_bytes!("./fixtures/small-1/signed_header.json");
     let file_content_str =
         core::str::from_utf8(file_content).expect("Failed to convert file content to string");
 
@@ -47,7 +47,7 @@ pub fn tendermint() {
         serde_json::from_str(file_content_str).expect("Failed to parse JSON");
     let signed_header = commit_response.result.signed_header;
 
-    let file_content = include_bytes!("./fixtures/1/validators.json");
+    let file_content = include_bytes!("./fixtures/small-1/validators.json");
     let file_content_str =
         core::str::from_utf8(file_content).expect("Failed to convert file content to string");
     let validators_response: ValidatorSetResponse =
@@ -55,7 +55,7 @@ pub fn tendermint() {
     let validators = validators_response.result;
     let validators = ValidatorSet::new(validators.validators, None);
 
-    let file_content = include_bytes!("./fixtures/1/next_validators.json");
+    let file_content = include_bytes!("./fixtures/small-1/next_validators.json");
     let file_content_str =
         core::str::from_utf8(file_content).expect("Failed to convert file content to string");
     let next_validators_response: ValidatorSetResponse =
@@ -69,7 +69,7 @@ pub fn tendermint() {
         LightBlock::new(signed_header, validators, next_validators, Id::new(peer_id));
 
     // // Generate the Light Block's without testgen
-    let file_content = include_bytes!("./fixtures/2/signed_header.json");
+    let file_content = include_bytes!("./fixtures/small-2/signed_header.json");
     let file_content_str =
         core::str::from_utf8(file_content).expect("Failed to convert file content to string");
 
@@ -77,7 +77,7 @@ pub fn tendermint() {
         serde_json::from_str(file_content_str).expect("Failed to parse JSON");
     let signed_header = commit_response.result.signed_header;
 
-    let file_content = include_bytes!("./fixtures/2/validators.json");
+    let file_content = include_bytes!("./fixtures/small-2/validators.json");
     let file_content_str =
         core::str::from_utf8(file_content).expect("Failed to convert file content to string");
     let validators_response: ValidatorSetResponse =
@@ -85,7 +85,7 @@ pub fn tendermint() {
     let validators = validators_response.result;
     let validators = ValidatorSet::new(validators.validators, None);
 
-    let file_content = include_bytes!("./fixtures/2/next_validators.json");
+    let file_content = include_bytes!("./fixtures/small-2/next_validators.json");
     let file_content_str =
         core::str::from_utf8(file_content).expect("Failed to convert file content to string");
     let next_validators_response: ValidatorSetResponse =

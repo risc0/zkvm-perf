@@ -3,12 +3,18 @@ set -e
 
 echo "Running $1, $2, $3, $4, $5"
 
-# Get program directory name as $1 and append "-$2" to it if $1 == "tendermint"
-if [ "$1" = "tendermint" ] || [ "$1" = "reth" ]; then
-    program_directory="${1}-$2"
-else
-    program_directory="$1"
+if [ "$1" = "loop" ] || [ "$1" = "fibonacci" ] || [ "$1" = "sha2-chain" ]; then
+    if [ "$2" = "jolt-zkvm" ]; then
+        dir_postfix="-jolt"
+    fi
+elif [ "$1" = "tendermint" ] || [ "$1" = "reth" ]; then
+    if [ "$2" = "jolt-zkvm" ]; then
+        dir_postfix="-jolt"
+    else
+        dir_postfix="-$2"
+    fi
 fi
+program_directory="${1}${dir_postfix}"
 
 echo "Building program"
 
