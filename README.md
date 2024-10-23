@@ -75,7 +75,7 @@ To run a single benchmark, you can run:
 ./eval.sh (loop|fibonacci|ssz_withdrawals|tendermint) (sp1|risc0|jolt-zkvm) (poseidon|sha256|blake3|...)
 ```
 
-Note that right now only poseidion is supported for all zkVMs, since we are interested in also profiling recursion.
+Note that right now only poseidon is supported for all zkVMs, since we are interested in also profiling recursion.
 
 Example SP1:
 ```
