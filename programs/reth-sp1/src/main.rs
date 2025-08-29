@@ -2,7 +2,7 @@
 //!
 //! The flow for the guest program is based on Zeth.
 //!
-//! Reference: https://github.com/risc0/zeth
+//! Reference: https://github.com/boundless-xyz/zeth
 
 #![no_main]
 sp1_zkvm::entrypoint!(main);
